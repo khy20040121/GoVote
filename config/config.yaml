@@ -1,0 +1,30 @@
+app:
+  name: "govote"
+  mode: "dev"       # gin框架设置发布模式, dev开启debug模式,release为发布模式,没有debug信息
+  port: 8080
+  version: "v1.1"
+  start_time: "2025-09-30"
+  machine_id: 1
+
+log:
+  logDir: "./Logs"
+
+auth:
+  jwt_expire: 8760
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: "123456"
+  db_name: "govote"
+  max_open_conns: 200
+  max_idle_conns: 50
+
+redis:
+  host: "127.0.0.1"
+  port: 6379
+  password: "123456"
+  db: 0
+  pool_size: 100
+  min_idle_conns: 30
