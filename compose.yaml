@@ -1,0 +1,94 @@
+name: govote
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=govote
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./myconf:/etc/mysql/conf.d
+    restart: always
+    networks:
+      - mynet
+
+  redis01:
+    container_name: redis01
+    image: bitnami/redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=123456
+    volumes:
+      - redis01_data:/bitnami/redis/data
+    restart: always
+    networks:
+      - mynet
+
+  redis02:
+    container_name: redis02
+    image: bitnami/redis
+#     ports:
+#       - "6380:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis01
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=123456
+      - REDIS_PASSWORD=123456
+    volumes:
+      - redis02_data:/bitnami/redis/data
+    restart: always
+    networks:
+      - mynet
+    depends_on:
+      - redis01
+
+  govote_app:
+    container_name: govote_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456
+      - MYSQL_DB_NAME=govote
+      - REDIS_HOST=redis01
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=123456
+      - REDIS_DB_NAME=0
+    depends_on:
+      - mysql
+      - redis01
+    restart: always
+    networks:
+      - mynet
+
+  govote_frontend:
+    container_name: govote_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - govote_app
+    restart: always
+    networks:
+      - mynet
+
+networks:
+  mynet:
+
+volumes:
+  redis01_data:
+  redis02_data:
+  mysql_data:
