@@ -10,7 +10,7 @@ const (
 	KeyPostScoreZSet   = "post:score"  // zset;贴子及投票的分数
 	KeyPostVotedZSetPF = "post:voted:" // zset;记录用户及投票类型;参数是post id
 
-	KeyCommunitySetPF = "community:" // set;保存每个分区下帖子的id
+	KeyCommunitySetPF = "community:" // zset;保存每个分区下帖子的id
 )
 
 // 给redis key加上前缀

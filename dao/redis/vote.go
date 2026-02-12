@@ -19,7 +19,7 @@ var (
 	ErrVoteRepeated   = errors.New("不允许重复投票")
 )
 
-// VoteForPost 为帖子投票dao
+// VoteForPost 为帖子投票
 func VoteForPost(userID, postID string, dir float64) error {
 	// 1 判断帖子投票限制,帖子一周之内才能投票
 
