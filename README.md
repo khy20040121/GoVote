@@ -39,6 +39,3 @@
 - `config/`: 配置文件
 - `compose.yaml`: Docker 编排文件
 
-## 文档
-
-- 接口文档: 请参考 `API.md`
