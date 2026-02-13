@@ -83,7 +83,6 @@ func GetCommunityPostIDsInOrder(p *models.ParamPostList) ([]string, error) {
 	cKey := getRedisKey(KeyCommunitySetPF + strconv.Itoa(int(p.CommunityID)))
 	key := orderKey + ":" + strconv.Itoa(int(p.CommunityID))
 
-	// 如果不存在需要计算
 	pipe := client.Pipeline()
 	pipe.ZInterStore(key, redis.ZStore{
 		Aggregate: "MAX",
